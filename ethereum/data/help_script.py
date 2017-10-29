@@ -9,6 +9,8 @@ def chomp(x):
     return x
 
 
+# Get a list of the closing prices per day
+
 file = open("ethereum_price.csv", 'r')
 file.readline()
 
@@ -21,11 +23,15 @@ for line in file:
         # time.sleep(1)
 file.close()
 
+# Get a list of percentage changes
 
 percentChanges = []
 increaseFlags = []
 
-for x in range(0,len(closingPrices)-1):
+percentChanges.append("JUNK")
+increaseFlags.append("JUNK")
+
+for x in range(0,len(closingPrices)-2):
     value = (float(closingPrices[x]) - float(closingPrices[x+1])) / (float(closingPrices[x+1])) * 100
     percentChanges.append( value)
 
@@ -35,8 +41,6 @@ for x in range(0,len(closingPrices)-1):
         increaseFlags.append(0)
 
 
-percentChanges.append("JUNK")
-increaseFlags.append("JUNK")
 
 
 
