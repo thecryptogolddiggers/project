@@ -1,5 +1,4 @@
 import csv
-import pandas as pd
 # note: small bug causing most recent date row to not work
 
 out = open("neo_price_new.csv", 'w')
