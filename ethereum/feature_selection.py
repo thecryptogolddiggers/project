@@ -158,6 +158,13 @@ features = df_ada.columns[0:num_feats]
 adaboost = ABC(n_estimators=100).fit(train[features], train[attribute])
 print("AdaBoost Accuracy: %.2f%%" % (adaboost.score(test[features], test[attribute])*100.0))
 
+
+# confusion matrix
+print("ADABOOST confusion matrix")
+preds = adaboost.predict(test[features])
+print( pd.crosstab(index=test[attribute], columns=preds, 
+                  rownames=['actual'], colnames=['preds']))
+
 # matthews correction coefficient
 coeff = mcc(test[attribute],adaboost.predict(test[features]))
 print("MCC = %.2f" % coeff)
@@ -233,6 +240,11 @@ features = df_gb.columns[0:num_feats]
 gradboost = GBC(n_estimators=100, learning_rate=0.01, max_depth=10, random_state=5)
 gradboost.fit(train[features], train[attribute])
 print("GradBoost Accuracy: %.2f%%" % (gradboost.score(test[features], test[attribute])*100.0))
+
+# confusion matrix
+preds = gradboost.predict(test[features])
+print (pd.crosstab(index=test[attribute], columns=preds, 
+                  rownames=['actual'], colnames=['preds']))
 
 # matthews correction coefficient
 coeff = mcc(test[attribute],gradboost.predict(test[features]))
@@ -310,6 +322,13 @@ nn = NeuralNet(solver='lbfgs', learning_rate_init=1e-3, alpha=1e-5, hidden_layer
 nn.fit(train[features], train[attribute])
 print("Neuralnet Accuracy: %.2f%%" % (nn.score(test[features], test[attribute])*100.0))
 
+results = nn.predict(test[features])
+
+# confusion matrix
+print (pd.crosstab(index=test[attribute], columns=results, 
+                  rownames=['actual'], colnames=['preds']))
+
+
 # matthews correction coefficient
 coeff = mcc(test[attribute],nn.predict(test[features]))
 print("MCC = %.2f" % coeff)
@@ -329,7 +348,7 @@ print("MCC = %.2f" % coeff)
 
 # predict whether price will increase or decrease
 # nn.fit(train[features], train[attribute])
-# price_increases_tomorrow = nn.predict(test[features])
+# increase_flag = nn.predict(test[features])
 # probs_inc = nn.predict_proba(test[features])
 # print(nn.score(test[features], test[attribute]))
 
@@ -366,4 +385,3 @@ plt.show()
 # optimal number of features
 best_n = accuracy_l.index(max(accuracy_l))
 print("By using %d of %d features, we attained %.2f%% accuracy\n" % (best_n + 1,num_feats,accuracy_l[best_n]))
-
